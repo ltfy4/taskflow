@@ -6,9 +6,10 @@ export interface Area {
   icon: string | null;
   color: string | null;
   sortOrder: number;
-  deletedAt: string | null;
+  collapsed: boolean;
   createdAt: string;
   updatedAt: string;
+  deletedAt: string | null;
 }
 
 /** Fields for creating a new area */
@@ -17,6 +18,7 @@ export interface CreateArea {
   icon?: string | null;
   color?: string | null;
   sortOrder?: number;
+  collapsed?: boolean;
 }
 
 /** Fields for updating an existing area */

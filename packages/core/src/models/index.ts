@@ -28,4 +28,4 @@ export type {
 
 export type { Tag, TaskTag, CreateTag, UpdateTag } from "./tag";
 
-export type { Profile, SubscriptionTier } from "./profile";
+export type { Profile, SubscriptionTier, UserSettings } from "./profile";

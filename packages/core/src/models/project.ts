@@ -1,5 +1,5 @@
 /** Status values for a project */
-export type ProjectStatus = "active" | "completed" | "cancelled" | "on_hold";
+export type ProjectStatus = "active" | "completed" | "cancelled";
 
 /** Core project entity */
 export interface Project {
@@ -8,12 +8,15 @@ export interface Project {
   areaId: string | null;
   name: string;
   notes: string | null;
+  color: string | null;
   deadline: string | null;
   status: ProjectStatus;
   sortOrder: number;
-  deletedAt: string | null;
+  completedAt: string | null;
+  cancelledAt: string | null;
   createdAt: string;
   updatedAt: string;
+  deletedAt: string | null;
 }
 
 /** Project with computed fields */
@@ -27,6 +30,7 @@ export interface CreateProject {
   name: string;
   areaId?: string | null;
   notes?: string | null;
+  color?: string | null;
   deadline?: string | null;
   status?: ProjectStatus;
   sortOrder?: number;

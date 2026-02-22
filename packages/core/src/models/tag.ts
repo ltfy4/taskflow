@@ -4,9 +4,7 @@ export interface Tag {
   userId: string;
   name: string;
   color: string | null;
-  deletedAt: string | null;
   createdAt: string;
-  updatedAt: string;
 }
 
 /** Junction table for task-tag relationship */

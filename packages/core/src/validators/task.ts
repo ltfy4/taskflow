@@ -2,31 +2,45 @@ import { z } from "zod";
 
 export const taskStatusSchema = z.enum(["active", "completed", "cancelled"]);
 
-export const timeSlotSchema = z.enum(["morning", "afternoon", "evening"]);
+export const timeSlotSchema = z.enum(["morning", "evening"]);
 
 export const prioritySchema = z.enum(["none", "low", "medium", "high"]);
 
 export const repeatConfigSchema = z.object({
-  frequency: z.enum(["daily", "weekly", "monthly", "yearly"]),
-  interval: z.number().int().min(1),
-  daysOfWeek: z.array(z.number().int().min(0).max(6)).optional(),
-  endDate: z.string().datetime().optional(),
+  frequency: z.enum([
+    "daily",
+    "weekly",
+    "biweekly",
+    "monthly",
+    "yearly",
+    "custom",
+  ]),
+  daysOfWeek: z
+    .array(z.enum(["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]))
+    .optional(),
+  dayOfMonth: z.number().min(1).max(31).optional(),
+  interval: z.number().min(1).optional(),
 });
 
 export const createTaskSchema = z.object({
-  title: z.string().min(1).max(500),
-  projectId: z.string().uuid().nullish(),
-  areaId: z.string().uuid().nullish(),
-  headingId: z.string().uuid().nullish(),
-  notes: z.string().max(10000).nullish(),
-  status: taskStatusSchema.optional(),
-  scheduledDate: z.string().date().nullish(),
-  scheduledTimeSlot: timeSlotSchema.nullish(),
-  deadline: z.string().date().nullish(),
-  reminderAt: z.string().datetime().nullish(),
-  repeatConfig: repeatConfigSchema.nullish(),
-  priority: prioritySchema.optional(),
-  sortOrder: z.number().int().optional(),
+  title: z.string().min(1).max(255),
+  notes: z.string().optional(),
+  projectId: z.string().uuid().optional(),
+  areaId: z.string().uuid().optional(),
+  headingId: z.string().uuid().optional(),
+  scheduledDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  scheduledTimeSlot: timeSlotSchema.optional(),
+  deadline: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  reminderAt: z.string().datetime().optional(),
+  repeatConfig: repeatConfigSchema.optional(),
+  tagIds: z.array(z.string().uuid()).optional(),
+  priority: prioritySchema.default("none"),
 });
 
 export const updateTaskSchema = createTaskSchema.partial();

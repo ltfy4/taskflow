@@ -2,17 +2,17 @@
 export type TaskStatus = "active" | "completed" | "cancelled";
 
 /** Time slot for scheduled tasks */
-export type TimeSlot = "morning" | "afternoon" | "evening";
+export type TimeSlot = "morning" | "evening";
 
 /** Priority levels */
 export type Priority = "none" | "low" | "medium" | "high";
 
 /** Repeat configuration for recurring tasks */
 export interface RepeatConfig {
-  frequency: "daily" | "weekly" | "monthly" | "yearly";
-  interval: number;
-  daysOfWeek?: number[];
-  endDate?: string;
+  frequency: "daily" | "weekly" | "biweekly" | "monthly" | "yearly" | "custom";
+  daysOfWeek?: ("MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT" | "SUN")[];
+  dayOfMonth?: number;
+  interval?: number;
 }
 
 /** Core task entity */
@@ -25,16 +25,18 @@ export interface Task {
   title: string;
   notes: string | null;
   status: TaskStatus;
+  priority: Priority;
   scheduledDate: string | null;
   scheduledTimeSlot: TimeSlot | null;
   deadline: string | null;
   reminderAt: string | null;
   repeatConfig: RepeatConfig | null;
-  priority: Priority;
   sortOrder: number;
-  deletedAt: string | null;
+  completedAt: string | null;
+  cancelledAt: string | null;
   createdAt: string;
   updatedAt: string;
+  deletedAt: string | null;
 }
 
 /** Fields for creating a new task */
@@ -45,16 +47,15 @@ export interface CreateTask {
   headingId?: string | null;
   notes?: string | null;
   status?: TaskStatus;
+  priority?: Priority;
   scheduledDate?: string | null;
   scheduledTimeSlot?: TimeSlot | null;
   deadline?: string | null;
   reminderAt?: string | null;
   repeatConfig?: RepeatConfig | null;
-  priority?: Priority;
+  tagIds?: string[];
   sortOrder?: number;
 }
 
 /** Fields for updating an existing task */
-export type UpdateTask = Partial<Omit<CreateTask, "title">> & {
-  title?: string;
-};
+export type UpdateTask = Partial<CreateTask>;
