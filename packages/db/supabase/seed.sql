@@ -39,43 +39,42 @@ BEGIN
   RAISE NOTICE 'Seeding data for user: %', test_user_id;
 
   -- ---- AREAS ----
+  area_personal := gen_random_uuid();
+  area_work := gen_random_uuid();
+
   INSERT INTO public.areas (id, user_id, name, icon, color, sort_order)
   VALUES
-    (gen_random_uuid(), test_user_id, 'Personal', '🏠', '#6366F1', 0),
-    (gen_random_uuid(), test_user_id, 'Work', '💼', '#F59E0B', 1)
-  RETURNING id INTO area_personal;
-
-  SELECT id INTO area_personal FROM public.areas WHERE user_id = test_user_id AND name = 'Personal';
-  SELECT id INTO area_work FROM public.areas WHERE user_id = test_user_id AND name = 'Work';
+    (area_personal, test_user_id, 'Personal', '🏠', '#6366F1', 0),
+    (area_work, test_user_id, 'Work', '💼', '#F59E0B', 1);
 
   -- ---- PROJECTS ----
+  project_app := gen_random_uuid();
+  project_fitness := gen_random_uuid();
+
   INSERT INTO public.projects (id, user_id, area_id, name, notes, status, sort_order)
   VALUES
-    (gen_random_uuid(), test_user_id, area_work, 'TaskFlow App', 'Build the best task manager', 'active', 0),
-    (gen_random_uuid(), test_user_id, area_personal, 'Fitness Journey', 'Get in shape for summer', 'active', 0);
-
-  SELECT id INTO project_app FROM public.projects WHERE user_id = test_user_id AND name = 'TaskFlow App';
-  SELECT id INTO project_fitness FROM public.projects WHERE user_id = test_user_id AND name = 'Fitness Journey';
+    (project_app, test_user_id, area_work, 'TaskFlow App', 'Build the best task manager', 'active', 0),
+    (project_fitness, test_user_id, area_personal, 'Fitness Journey', 'Get in shape for summer', 'active', 0);
 
   -- ---- HEADINGS ----
+  heading_design := gen_random_uuid();
+  heading_dev := gen_random_uuid();
+
   INSERT INTO public.headings (id, user_id, project_id, title, sort_order)
   VALUES
-    (gen_random_uuid(), test_user_id, project_app, 'Design', 0),
-    (gen_random_uuid(), test_user_id, project_app, 'Development', 1);
-
-  SELECT id INTO heading_design FROM public.headings WHERE user_id = test_user_id AND title = 'Design';
-  SELECT id INTO heading_dev FROM public.headings WHERE user_id = test_user_id AND title = 'Development';
+    (heading_design, test_user_id, project_app, 'Design', 0),
+    (heading_dev, test_user_id, project_app, 'Development', 1);
 
   -- ---- TAGS ----
+  tag_urgent := gen_random_uuid();
+  tag_important := gen_random_uuid();
+  tag_learning := gen_random_uuid();
+
   INSERT INTO public.tags (id, user_id, name, color)
   VALUES
-    (gen_random_uuid(), test_user_id, 'urgent', '#EF4444'),
-    (gen_random_uuid(), test_user_id, 'important', '#F59E0B'),
-    (gen_random_uuid(), test_user_id, 'learning', '#3B82F6');
-
-  SELECT id INTO tag_urgent FROM public.tags WHERE user_id = test_user_id AND name = 'urgent';
-  SELECT id INTO tag_important FROM public.tags WHERE user_id = test_user_id AND name = 'important';
-  SELECT id INTO tag_learning FROM public.tags WHERE user_id = test_user_id AND name = 'learning';
+    (tag_urgent, test_user_id, 'urgent', '#EF4444'),
+    (tag_important, test_user_id, 'important', '#F59E0B'),
+    (tag_learning, test_user_id, 'learning', '#3B82F6');
 
   -- ---- TASKS ----
   -- Today tasks
